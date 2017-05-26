@@ -35,12 +35,17 @@ shinyUI(fluidPage(
                                     ),
                                     mainPanel(
                                       tabsetPanel(
-                                      tabPanel("Crash Situation"),
+                                      tabPanel("Crash Situation",
+                                               tabsetPanel(
+                                                 tabPanel("By Years"),
+                                                 tabPanel("By Months"),
+                                                 tabPanel("By Days")
+                                               )),
                                       tabPanel("Death Percent"),
                                       tabPanel("Crash Location"),
                                       tabPanel("Aircraft Operator"),
                                       tabPanel("Aircraft Type"),
-                                      tabPanel("Word Cloud of Summary")
+                                      tabPanel("Word Cloud")
                                     )
                                       
                                     ))
