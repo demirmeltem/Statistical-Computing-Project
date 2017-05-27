@@ -3,7 +3,7 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 
-air.crash <- read.csv("/home/demirmeltem/Desktop/statistical_final_report/aircrash_new.csv")
+air.crash <- read.csv("/home/demirmeltem/Desktop/Statistical-Computing-Project/final_project/aircrash_new.csv")
 
 air.crash <- na.omit(air.crash)
 air.crash <- air.crash %>% separate(Date, into = c("Month","Day","Year"))
