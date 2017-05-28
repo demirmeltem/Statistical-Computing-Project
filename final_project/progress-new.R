@@ -2,11 +2,15 @@ library(magrittr)
 library(tidyr)
 library(stringr)
 library(ggplot2)
+library(plyr)
+library(dplyr)
+library(wordcloud)
+library(RColorBrewer)
 
 
-air.crash <- read.csv("/home/demirmeltem/Desktop/Statistical-Computing-Project/final_project/aircrash_new.csv")
+#air.crash <- read.csv("/home/demirmeltem/Desktop/Statistical-Computing-Project/final_project/aircrash_new.csv")
 
-#air.crash <- read.csv("/home/demirmeltem/Statistical-Computing-Project/final_project/aircrash_new.csv")
+air.crash <- read.csv("/home/demirmeltem/Statistical-Computing-Project/final_project/aircrash_new.csv")
 
 air.crash <- na.omit(air.crash)
 air.crash <- air.crash %>% separate(Date, into = c("Month","Day","Year"))
@@ -52,6 +56,7 @@ days_graph + geom_line(color="darkred", linetype = 2) +
   
 ##Death Percent
 
+deads_by_year <- aggregate(data=air.crash, Number.of.Dead ~ Accident.Year , FUN=sum)
 p1 <- ggplot(deads_by_year, aes(x = Accident.Year, y = Number.of.Dead))
 p1 + geom_point() + geom_smooth() + 
   xlab("Accident Year") + ylab("Number of Dead") + 
@@ -72,8 +77,6 @@ p2
 
 air.crash$Accident.Country <- str_trim(air.crash$Accident.Country, side = "both")
 
-library(plyr)
-
 Countries <- ddply(air.crash, c("Accident.Country"), summarise,
                    total_deads = sum(!is.na(Number.of.Dead)))
 
@@ -82,10 +85,29 @@ Countries <- Countries[order(Countries$total_deads, decreasing = TRUE), ]
 Countries <- head(Countries, 10)
 
 p3 <- ggplot(Countries, aes(x=Accident.Country, y=total_deads, alpha = total_deads))
-p3 + geom_bar(stat = "identity", fill = "brown", position = position_stack(reverse = TRUE), width = 0.5) +
+p3 + geom_bar(stat = "identity", col = "navy", position = position_stack(reverse = TRUE), width = 0.5) +
   coord_flip() +
   xlab("Countries") + ylab("Number of Deaths") + 
   ggtitle("Top 10 Countries with Maximum Fatalities")
+
+
+#cities
+air.crash$Accident.City <- str_trim(air.crash$Accident.City, side = "both")
+
+Cities <- ddply(air.crash, c("Accident.City"), summarise,
+                   total_deads = sum(!is.na(Number.of.Dead)))
+
+Cities <- Cities[order(Cities$total_deads, decreasing = TRUE), ]
+
+Cities <- head(Cities, 10)
+Cities <- tail(Cities, 9)
+
+pc <- ggplot(Cities, aes(x=Accident.City, y=total_deads, alpha = total_deads))
+pc + geom_bar(stat = "identity", col = "navy", position = position_stack(reverse = TRUE), width = 0.5) +
+  coord_flip() +
+  xlab("Cities") + ylab("Number of Deaths") + 
+  ggtitle("Top 10 Cities with Maximum Fatalities")
+
 
 
 ##Aircraft Operator
@@ -96,9 +118,9 @@ Operators <- ddply(air.crash, c("Aircraft.Operator"), summarise,
 Operators <- Operators[order(Operators$total_deads, decreasing = TRUE), ]
 
 Operators <- head(Operators, 10)
-
+#fill="navy", semi-transparency is not supported on this device
 p4 <- ggplot(Operators, aes(y= total_deads, x = Aircraft.Operator, alpha = total_deads))
-p4 + geom_bar(stat = "identity", fill = "navy", position = position_stack(reverse = TRUE), width = 0.5) +
+p4 + geom_bar(stat = "identity", col="brown", position = position_stack(reverse = TRUE), width = 0.5) +
   coord_flip() +
   xlab("Aircraft Operators") + ylab("Number of Deaths") + 
   ggtitle("Top 10 Aircraft Operator causing Aircrash")
@@ -112,15 +134,44 @@ Types <- ddply(air.crash, c("Aircraft.Type"), summarise,
 Types <- Types[order(Types$total_deads, decreasing = TRUE), ]
 
 Types <- head(Types, 10)
-
+#fill = "#1C5219"
 p4 <- ggplot(Types, aes(y= total_deads, x = Aircraft.Type, alpha = total_deads))
-p4 + geom_bar(stat = "identity", fill = "#1C5219", position = position_stack(reverse = TRUE), width = 0.5) +
+p4 + geom_bar(stat = "identity", col = "#1C5219", position = position_stack(reverse = TRUE), width = 0.5) +
   coord_flip() +
   xlab("Aircraft Type") + ylab("Number of Deaths") + 
   ggtitle("Top 10 Aircraft Type causing Aircrash")
 
 
 ##Word Cloud
-library(wordcloud2)
+library(wordcloud)
+library(RColorBrewer)
+library(tm)
+
+data <- Corpus(VectorSource(air.crash$Summary))
+
+corpus_clean <- tm_map(data, tolower)
+corpus_clean <- tm_map(corpus_clean, removePunctuation)
+corpus_clean <- tm_map(corpus_clean, PlainTextDocument)
+corpus_clean <- tm_map(corpus_clean, removeNumbers)
+corpus_clean <- tm_map(corpus_clean, removeWords, stopwords("english"))
+corpus_clean <- tm_map(corpus_clean, removeWords, "flight")
+corpus_clean <- tm_map(corpus_clean, removeWords, "crashed")
+corpus_clean <- tm_map(corpus_clean, removeWords, "plane")
+corpus_clean <- tm_map(corpus_clean, removeWords, "aircraft")
+corpus_clean <- tm_map(corpus_clean, stripWhitespace)
+corpus_clean <- tm_map(corpus_clean, tolower)
+corpus_clean <- tm_map(corpus_clean, stemDocument)
+corpus_clean <- tm_map(corpus_clean, removeWords, "i")
+corpus_clean <- tm_map(corpus_clean, removeWords, "j")
+corpus_clean <- tm_map(corpus_clean, removeWords, "v")
+
+tdm <- TermDocumentMatrix(corpus_clean)
+m <- as.matrix(tdm)
+v <- sort(rowSums(m),decreasing=TRUE)
+d <- data.frame(word = names(v),freq=v)
+pal <- brewer.pal(9, "BuGn")
+pal <- pal[-(1:2)]
+
+wordcloud(corpus_clean, max.words = 100, min.freq = 35, random.order = FALSE, colors=pal)
 
 
