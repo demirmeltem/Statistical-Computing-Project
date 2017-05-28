@@ -171,7 +171,7 @@ shinyUI(fluidPage(
                                                             "The Location column that was spilled into country and city is used here. The data is grouped by the country and the total deaths for each country 			is calculated. Here we plot a graph to observe the top 10 countries which encountered the aircrash. It is observed that Russia and Brazil has had the 			maximum crashes out of all the Countries.",
                                                             plotOutput("countries", height = 450)),
                                                    tabPanel("Death by Cities", 
-                                                            "The Location column that was spilled into country and city is used here. The data is grouped by the city and the total deaths for each city is 			calculated. Here we plot a graph to observe the top 10 cities which encountered the aircrash. It is observed that XXX has had the maximum crashes out of 			all the Cities.",
+                                                            "The Location column that was spilled into country and city is used here. The data is grouped by the city and the total deaths for each city is 			calculated. Here we plot a graph to observe the top 10 cities which encountered the aircrash. It is observed that Moscow and San Paulo has had the maximum crashes out of 			all the Cities.",
                                                             plotOutput("cities", height = 450))
                                                    )),
                                         tabPanel("Operators",
