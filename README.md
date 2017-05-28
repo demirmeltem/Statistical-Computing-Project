@@ -13,5 +13,5 @@ results and come to a conclusion.
 
 # Reference 
 
-  *[Vincent Tarel Bundock] (https://vincentarelbundock.github.io/Rdatasets/doc/gamclass/airAccs.html)
-  *[Kaggle] (https://www.kaggle.com/saurograndi/airplane-crashes-since-1908)
+  * [Vincent Tarel Bundock] (https://vincentarelbundock.github.io/Rdatasets/doc/gamclass/airAccs.html)
+  * [Kaggle] (https://www.kaggle.com/saurograndi/airplane-crashes-since-1908)
