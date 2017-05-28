@@ -11,6 +11,7 @@ results and come to a conclusion.
 # UI
 ![alt text](https://github.com/demirmeltem/Statistical-Computing-Project/blob/master/shiny.png "Shiny Look")
 
-# Reference
-  *[Vincent Tarel Bundock](https://vincentarelbundock.github.io/Rdatasets/doc/gamclass/airAccs.html)
-  *[Kaggle](https://www.kaggle.com/saurograndi/airplane-crashes-since-1908)
+# Reference 
+
+  *[Vincent Tarel Bundock] (https://vincentarelbundock.github.io/Rdatasets/doc/gamclass/airAccs.html)
+  *[Kaggle] (https://www.kaggle.com/saurograndi/airplane-crashes-since-1908)
