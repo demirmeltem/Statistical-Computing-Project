@@ -34,10 +34,7 @@ shinyUI(fluidPage(
              ),
              
              tabPanel("Data Preparation",
-                      sidebarLayout(position= "right",
-                                    sidebarPanel(
-                                      
-                                    ),
+                      
                                     mainPanel(
                                       tabsetPanel(
                                         tabPanel("Original Data",
@@ -132,15 +129,11 @@ shinyUI(fluidPage(
                                                  )
                                       )
                                       
-                                    ))
+                                    )
              ),
              
              tabPanel("Data Analysis",
-                      sidebarLayout(position= "right",
-                                    sidebarPanel(
-                                
-                                      
-                                    ),
+                      
                                     mainPanel(
                                       tabsetPanel(
                                         tabPanel("Crash Situation",
@@ -186,7 +179,7 @@ shinyUI(fluidPage(
                                       
                                       
                                     ))
-             )),
+             ),
              
              tabPanel("Summary",
                       fixedRow(
