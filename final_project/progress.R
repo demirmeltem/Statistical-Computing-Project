@@ -7,7 +7,6 @@ library(dplyr)
 library(wordcloud)
 library(RColorBrewer)
 
-
 #air.crash <- read.csv("/home/demirmeltem/Desktop/Statistical-Computing-Project/final_project/aircrash_new.csv")
 
 air.crash <- read.csv("/home/demirmeltem/Statistical-Computing-Project/final_project/aircrash_new.csv")
